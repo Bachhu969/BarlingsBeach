@@ -1,19 +1,19 @@
 <?php
-    $room_id = htmlspecialchars($_GET["room_id"]);
-    $room_name = htmlspecialchars($_GET["room_name"]);
-    $arrivaldate = htmlspecialchars($_GET["arrivaldate"]);
-    $departuredate = htmlspecialchars($_GET["departuredate"]);
-    $fullname = htmlspecialchars($_GET["fullname"]);
-    $address = htmlspecialchars($_GET["address"]);
-    $email = htmlspecialchars($_GET["email"]);
-    $phone = htmlspecialchars($_GET["phone"]);
-
-    session_start();
+    //die();
     //connect to database
-    $mysqli = mysqli_connect('localhost', 'root', '', 'barlingsbeach');
-    $reserveroom = "INSERT INTO reservation (room_id, room_name, arrivaldate, departuredate, fullname, address, email, phone) VALUES ($room_id, '$room_name', '$arrivaldate', '$departuredate', '$fullname', '$address', '$email', '$phone')";
+    require_once('includes/connection.php');
+    //var_dump($_SESSION);
+    $order_no = $_GET['order_no'];
+    if( !isset($_SESSION['order_no']) || $order_no!=$_SESSION['order_no']){
+        //die('order already complete.');
+        header('Location: index.php');
+        die();
+    }
+    $reserveroom = sprintf("INSERT INTO reservation (room_id, room_name, arrivaldate, departuredate, fullname, address, email, phone) VALUES (%d, '%s', '%s', '%s', '%s', '%s', '%s', '%s')", $_SESSION['room_id'], $_SESSION['room_name'].'--'.$order_no, $_SESSION['arrival_date'], $_SESSION['departure_date'], $_SESSION['first_name'].' '.$_SESSION['last_name'], $_SESSION['address1'], $_SESSION['email'], $_SESSION['phone']);
+    //echo $reserveroom;
     $reserveroomq = mysqli_query($mysqli, $reserveroom)
     or die(mysqli_error($mysqli));
+    unset($_SESSION['order_no']);
 
     //close connection to MySQL
     mysqli_close($mysqli);
@@ -80,7 +80,7 @@
                                 <a href="index.php" title="Home">Home</a>
                             </li>
                             <li>
-                                <a href="room.php#<?php echo htmlspecialchars($_GET["room_id"]);?>" title="Room & Rate">Accommodation</a>
+                                <a href="room.php?<?=$_SESSION["room_id"];?>" title="Room & Rate">Accommodation</a>
                                 <ul class="dropdown-menu icon-fa-caret-up submenu-hover">
                                     <li><a href="room_detail.html" title="">Accommodation Detail</a></li>
                                 </ul>
@@ -109,19 +109,40 @@
     
     <section class="section-reservation-page ">
         <div class="container">
-            <table style="border: solid 1px #aaa999;"> 
-                <div>
-                    <h1>Thank you for your reservation!<br></h1><br> <h3>Your reservation details are as follows:</h3>
-                    <br/>Arrival date: <?php echo $arrivaldate ?>
-                    <br/>Departure date: <?php echo $departuredate ?>
-                    <br/>Accommodation: <?php echo $room_id?> <?php echo $room_name?>
-                    <br/>Your name: <?php echo $fullname ?>
-                    <br/>Address: <?php echo $address ?>
-                    <br/>Email: <?php echo $email ?>
-                    <br/>Phone: <?php echo $phone ?>
-                    <br/><br/>
-                    
-                </div>
+            <h1>Thank you for your reservation!<br></h1><br> <h3>Your reservation details are as follows:</h3>
+            <table class="table"> 
+            <tr>
+                    <th>Accommodation: </th>
+                    <td><?=$_SESSION['room_name']; ?></td>
+                </tr>
+                <tr>
+                    <th>Client: </th>
+                    <td><?=$_SESSION['first_name'].' '.$_SESSION['last_name']; ?></td>
+                </tr>
+                <tr>
+                    <th>Order No: </th>
+                    <td><?=$order_no; ?></td>
+                </tr>
+            <tr>
+                    <th>Arrival date: </th>
+                    <td><?=$_SESSION['arrival_date']; ?></td>
+                </tr>
+                <tr>
+                    <th>Departure date: </th>
+                    <td><?=$_SESSION['departure_date']; ?></td>
+                </tr>
+                <tr>
+                    <th>Address: </th>
+                    <td><?=$_SESSION['address1']; ?></td>
+                </tr>
+                <tr>
+                    <th>Email: </th>
+                    <td><?=$_SESSION['email']; ?></td>
+                </tr>
+                <tr>
+                    <th>Phone: </th>
+                    <td><?=$_SESSION['phone']; ?></td>
+                </tr>
             </table>
         </div>
 
