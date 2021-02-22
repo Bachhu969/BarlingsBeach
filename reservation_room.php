@@ -101,7 +101,7 @@ $_SESSION['total_cost'] = $_POST['total_cost'];
                             </li>
                             <li>
                                 <a href="room.php?<?=$roomData["RoomID"];?>"
-                                    title="Room & Rate">Accommodation</a>
+                                    title="Accommodation">Accommodation</a>
                                 <ul class="dropdown-menu icon-fa-caret-up submenu-hover">
                                     <li><a href="room.php?<?=$roomData["RoomID"];?>" title="">Accommodation Detail</a></li>
                                 </ul>

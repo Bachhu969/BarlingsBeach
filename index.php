@@ -3,7 +3,7 @@ session_start();
 //connect to database
 $mysqli = mysqli_connect('localhost', 'root', '', 'barlingsbeach');
 //show categories first
-$display_block='<form method="get" action="room_1.php">';
+$display_block='<form method="get" action="room.php">';
 $display_block .= <<<END_OF_TEXT
 <!-- HEADER -->
 <header class="header-sky">
@@ -38,7 +38,7 @@ $display_block .= <<<END_OF_TEXT
                             <a href="index.php" title="Home">Home</a>
                         </li>
                         <li>
-                            <a href="room.php" title="Room & Rate">Accommodation</a>
+                            <a href="room_list.php" title="Accommodation">Accommodation</a>
                            
                         </li>
                         <li>

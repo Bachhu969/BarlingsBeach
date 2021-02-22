@@ -36,32 +36,33 @@
             <div class="bottom">
                 <input type="hidden" id="my_price" value="<?=$roomData['NormalCharges'];?>"/>
                 <input type="hidden" id="my_peak_price" value="<?=$roomData['PeakCharges'];?>"/>
-                <span class="price">
-                    <h5>Stay:</h5> <span class="amout">$
-                        <?=$roomData['NormalCharges'];?></span>/Night<br>(1 May
-                    - 30
-                    September)
-                </span><br>
-                <span class="price">
-                    <h5>Stay:</h5><span class="amout">$
-                        <?=$roomData['PeakCharges'];?></span>/Night <br>(1
-                    October – 30
-                    April )
-                </span>
-                <button type="submit" class="btn">Reserve</button>
-                <!-- <a href="reservation_2.html" class="btn-room btn ">VIEW DETAILS</a> -->
-            </div>
-            <div class="text-center">You won't be charged yet.<br/>Price shown is the total trip price, including additional fees and taxes.</div>
+                <div class="text-center">You won't be charged yet.<br/>Price shown is the total trip price, including additional fees and taxes.</div>
             <hr/>
             <div class="row font-bold">
                 <div class="col-sm-8">
-                    $ <?=$roomData['NormalCharges'];?> x <span class="total_days">0</span> nights
+                  <h4><strong>TOTAL</strong> <br> $ <?=$roomData['NormalCharges'];?> X <span class="total_days">0</span> Nights</h4>
                 </div>
                 <input type="hidden" name="total_days" class="total_days" value=0/>
                 <input type="hidden" name="rate" class="rate" value=0/>
-                <input type="hidden" name="total_cost" class="total_cost" value=0/>
-                <div class="col-sm-4">$ <span class="total_cost">0</span></div>
+                <input type="hidden" name="total_cost" class="total_cost" value=0/><br>
+                <h4><strong><div class="col-sm-4">$ <span class="total_cost">0</span></div>
+            </div></strong></h4>
+                <span class="price">
+                    <h5>STAY:  <span>$
+                        <?=$roomData['NormalCharges'];?> </span> / Night<br>FROM (1 May
+                    - 30
+                    September)</h5>
+                </span><br>
+                <span class="price">
+                    <h5>STAY: <span>$
+                        <?=$roomData['PeakCharges'];?>  </span> / Night <br>FROM (1
+                    October – 30
+                    April )</h5>
+                </span><hr>
+                <button type="submit" class="btn">Reserve</button>
+                <!-- <a href="reservation_2.html" class="btn-room btn ">VIEW DETAILS</a> -->
             </div>
+           
         </div>
     </form>
 </div>

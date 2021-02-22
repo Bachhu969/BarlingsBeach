@@ -2003,7 +2003,7 @@
 /*2.4.13 BODY-ROOM */
 
 .body-room-1 {
-    padding-bottom: 85px;
+    padding-bottom: 10px;
     @media(max-width: 767px) {
         padding-bottom: 40px;
     }
@@ -2065,15 +2065,7 @@
                         font-weight: 400;
                         color: #232323;
                         &:before {
-                            width: 5px;
-                            height: 5px;
-                            background-color: #232323;
-                            content: '';
-                            position: absolute;
-                            top: 8px;
-                            left: 0;
-                            -webkit-border-radius: 100%;
-                            border-radius: 100%;
+                            
                         }
                     }
                 }
@@ -6418,12 +6410,7 @@
     padding-top: 15px;
     position: relative;
     &:before {
-        border-left: 1px solid #e4e4e4;
-        content: '';
-        position: absolute;
-        left: -30px;
-        top: 0;
-        bottom: 0;
+        
         @media(max-width: 992px) {
             border: none;
         }

@@ -1,14 +1,8 @@
 <?php
-    require_once('includes/connection.php');
+require_once('includes/connection.php');
 
-
-
-//get/grab incoming room id
-$room_id =@( isset($_GET['id'])? $_GET['id'] * 1: 0);
-$roomData = GetRoomDetail($room_id);
-
-?>  
-
+$allrooms=GetRoomList();
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -37,10 +31,9 @@ $roomData = GetRoomDetail($room_id);
 </head>
 
 <body>
-    <?php include('includes/header.php');?>         
-    <?php include('includes/room_static.php');?>
+    <?php include('includes/header.php');?> 
+    <?php include('includes/room_all.php');?>
     <?php include('includes/footer.php');?>
-    
 </body>
 
 

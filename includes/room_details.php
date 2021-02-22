@@ -7,7 +7,7 @@
                   </div>
                      <div class="content">
                             <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-10">
                                             <p>
                                                 <h5>$roomDescription</h5>
                                             </p>  
