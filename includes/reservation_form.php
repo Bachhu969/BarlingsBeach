@@ -1,7 +1,7 @@
 <!-- WIDGET CHECK AVAILABILITY -->
 <div class="widget widget_check_availability">
 
-    <form action="reservation_room.php" method="POST">
+    <form action="reservation_room.php" method="POST" class="resForm">
         <h3 class="widget-title">YOUR RESERVATION</h3>
         <div class="check_availability">
             <p>
@@ -14,8 +14,8 @@
                 <label>Arrive</label>
                 <div class="input-group date" data-date-format="dd-mm-yyyy"
                     id="datepicker1">
-                    <input id="arrivaldate" onchange="calculate_cost()"
-                        name="arrivaldate" class="form-control wrap-box"
+                    <input id="arrivaldate_<?=$roomData['RoomID'];?>" onchange="calculate_cost()"
+                        name="arrivaldate" class="form-control wrap-box arrivaldate"
                         type="text" placeholder="Arrival Date">
                     <span class="input-group-addon"><i class="fa fa-calendar"
                             aria-hidden="true"></i></span>
@@ -26,7 +26,7 @@
                 <div id="datepicker2" class="input-group date"
                     data-date-format="dd-mm-yyyy">
                     <input id="departuredate" onchange="calculate_cost()"
-                        name="departuredate" class="form-control wrap-box"
+                        name="departuredate" class="form-control wrap-box departuredate"
                         type="text" placeholder="Departure Date">
                     <span class="input-group-addon"><i class="fa fa-calendar"
                             aria-hidden="true"></i></span>
@@ -34,8 +34,8 @@
             </div>
             <h6 class="check_availability_title">Accommodation</h6>
             <div class="bottom">
-                <input type="hidden" id="my_price" value="<?=$roomData['NormalCharges'];?>"/>
-                <input type="hidden" id="my_peak_price" value="<?=$roomData['PeakCharges'];?>"/>
+                <input type="hidden" class="my_price" value="<?=$roomData['NormalCharges'];?>"/>
+                <input type="hidden" class="my_peak_price" value="<?=$roomData['PeakCharges'];?>"/>
                 <div class="text-center">You won't be charged yet.<br/>Price shown is the total trip price, including additional fees and taxes.</div>
             <hr/>
             <div class="row font-bold">
@@ -70,17 +70,18 @@
 
 
 <script>
-    function calculate_cost() {
-        var arrivaldate = $('#arrivaldate').val();
-        var departuredate = $('#departuredate').val();
+    function calculateSingleForm(parentObj)
+    {
+        var arrivaldate = $(parentObj).find('.arrivaldate').val();
+        var departuredate = $(parentObj).find('.departuredate').val();
         if (arrivaldate && departuredate) {
 
             var arrivalmonth = parseInt(arrivaldate.split("-")[1]);
             var departuremonth = parseInt(departuredate.split("-")[1]);
 
-            var price = $('#my_price').val();
+            var price = $(parentObj).find('.my_price').val();
             if ((arrivalmonth <= 4 || arrivalmonth >= 10) || (departuremonth <= 4 || departuremonth >= 10)) {
-                price = $('#my_peak_price').val();
+                price = $(parentObj).find('.my_peak_price').val();
             }
 
             function fixdate(dt) {
@@ -96,14 +97,20 @@
             var departure = new Date(fixdate(departuredate)).getTime();
 
             var num_of_nights = Math.round((departure - arrival) / (1000 * 60 * 60 * 24));
-            $('.total_days').text(num_of_nights);
-            $('.total_days').val(num_of_nights);
-            $('.rate').text(num_of_nights);
-            $('.rate').val(price);
-            $('.total_cost').text(num_of_nights * price);
-            $('.total_cost').val(num_of_nights * price);
+            $(parentObj).find('.total_days').text(num_of_nights);
+            $(parentObj).find('.total_days').val(num_of_nights);
+            $(parentObj).find('.rate').text(num_of_nights);
+            $(parentObj).find('.rate').val(price);
+            $(parentObj).find('.total_cost').text(num_of_nights * price);
+            $(parentObj).find('.total_cost').val(num_of_nights * price);
         } else {
-            $('.total_cost').val(0);
+            $(parentObj).find('.total_cost').val(0);
         }
+    }
+    function calculate_cost() {
+        $('.resForm').each(function(index, item){
+            //console.log(item);
+            calculateSingleForm(item);
+        });
     }
     </script>

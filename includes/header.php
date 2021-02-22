@@ -31,7 +31,7 @@
                             <a href="index.php" title="Home">Home</a>
                         </li>
                         <li>
-                            <a href="room_1.php" title="Accommodation">Accommodation</a>
+                            <a href="room_list.php" title="Accommodation">Accommodation</a>
                             <ul class="dropdown-menu icon-fa-caret-up submenu-hover">
                                 <li><a href="room_detail.html" title="">Accommodation Detail</a></li>
                             </ul>
