@@ -195,8 +195,13 @@ $(document).ready(function() {
 
     /*datepicker*/
     $(function() {
-        $('#datepicker').each(function() {
+        $('#datepicker, .datepicker').each(function() {
             $(this).datepicker({
+                dateFormat: 'mm/dd/yy',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '-100y:c+nn',
+                maxDate: '-1d',
                 autoclose: true,
                 todayHighlight: true
             }).datepicker('update', new Date());

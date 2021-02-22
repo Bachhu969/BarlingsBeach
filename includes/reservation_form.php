@@ -12,7 +12,7 @@
                 type="hidden" />
             <div class="check_availability-field">
                 <label>Arrive</label>
-                <div class="input-group date" data-date-format="dd-mm-yyyy"
+                <div class="input-group date datepicker fromDate" data-date-format="dd-mm-yyyy"
                     id="datepicker1">
                     <input id="arrivaldate_<?=$roomData['RoomID'];?>" onchange="calculate_cost()"
                         name="arrivaldate" class="form-control wrap-box arrivaldate"
@@ -23,7 +23,7 @@
             </div>
             <div class="check_availability-field">
                 <label>Depature</label>
-                <div id="datepicker2" class="input-group date"
+                <div id="datepicker2" class="input-group date datepicker toDate"
                     data-date-format="dd-mm-yyyy">
                     <input id="departuredate" onchange="calculate_cost()"
                         name="departuredate" class="form-control wrap-box departuredate"
@@ -70,6 +70,15 @@
 
 
 <script>
+    function fixdate(dt) {
+        var datearr = dt.split("-");
+        var day = datearr[0];
+        var month = datearr[1];
+        datearr[0] = month;
+        datearr[1] = day;
+        return datearr.join("-");
+    }
+
     function calculateSingleForm(parentObj)
     {
         var arrivaldate = $(parentObj).find('.arrivaldate').val();
@@ -84,19 +93,18 @@
                 price = $(parentObj).find('.my_peak_price').val();
             }
 
-            function fixdate(dt) {
-                var datearr = dt.split("-");
-                var day = datearr[0];
-                var month = datearr[1];
-                datearr[0] = month;
-                datearr[1] = day;
-                return datearr.join("-");
-            }
-
+          
             var arrival = new Date(fixdate(arrivaldate)).getTime();
             var departure = new Date(fixdate(departuredate)).getTime();
+            
+            if(arrival>departure){
+                //console.log($(parentObj).find('.departuredate').length);
+                departure = arrival;
+                $(parentObj).find('.departuredate').val(departure);
+            }
 
             var num_of_nights = Math.round((departure - arrival) / (1000 * 60 * 60 * 24));
+            
             $(parentObj).find('.total_days').text(num_of_nights);
             $(parentObj).find('.total_days').val(num_of_nights);
             $(parentObj).find('.rate').text(num_of_nights);
@@ -111,6 +119,31 @@
         $('.resForm').each(function(index, item){
             //console.log(item);
             calculateSingleForm(item);
+        });
+        $('.fromDate').on('change', function(e){
+                //console.log('changed');
+                $parent = $(this).closest('.resForm')[0];
+                $parent = $($parent);
+                //console.log($parent);
+                //console.log($parent.find('.arrivaldate').length);
+                fromDate = $parent.find('.arrivaldate').val();
+                toDate = $parent.find('.departuredate').val();
+
+                var arrival = new Date(fixdate(fromDate)).getTime();
+                var departure = new Date(fixdate(toDate)).getTime();
+
+
+                if(departure<arrival){toDate=fromDate;}
+                //console.log(fromDate);
+                $toDate = $parent.find('.toDate').datepicker({
+                    dateFormat: 'mm/dd/yy',
+                    changeMonth: true,
+                    changeYear: true,
+                    yearRange: '100y:c+nn',
+                    minDate: fromDate,
+                    autoclose: true,
+                    todayHighlight: true
+                }).datepicker('update', toDate);
         });
     }
     </script>
