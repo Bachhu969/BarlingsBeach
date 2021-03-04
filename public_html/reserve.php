@@ -1,19 +1,23 @@
 <?php
     //die();
     //connect to database
+    require_once('models/reservation.php');
     require_once('includes/connection.php');
     //var_dump($_SESSION);
     $order_no = $_GET['order_no'];
-    if( !isset($_SESSION['order_no']) || $order_no!=$_SESSION['order_no']){
+    $objRes = isset($_SESSION['Reservation'])? $_SESSION['Reservation']: new ReservationDetail();
+    if( !isset($_SESSION['Reservation']) || $order_no!=$objRes->order_no){
         //die('order already complete.');
         header('Location: index.php');
         die();
     }
-    $reserveroom = sprintf("INSERT INTO reservation (room_id, room_name, arrivaldate, departuredate, fullname, address, email, phone) VALUES (%d, '%s', '%s', '%s', '%s', '%s', '%s', '%s')", $_SESSION['room_id'], $_SESSION['room_name'].'--'.$order_no, $_SESSION['arrival_date'], $_SESSION['departure_date'], $_SESSION['first_name'].' '.$_SESSION['last_name'], $_SESSION['address1'], $_SESSION['email'], $_SESSION['phone']);
+    $arrRes = (array) $objRes;
+    $reserveroom = sprintf("INSERT INTO reservation (room_id, room_name, arrivaldate, departuredate, fullname, address, email, phone) VALUES (%d, '%s', '%s', '%s', '%s', '%s', '%s', '%s')", $arrRes['room_id'], $arrRes['room_name'].'--'.$order_no, $arrRes['arrival_date'], $arrRes['departure_date'], $arrRes['first_name'].' '.$arrRes['last_name'], $arrRes['address1'], $_SESSION['email'], $arrRes['phone']);
     //echo $reserveroom;
     $reserveroomq = mysqli_query($mysqli, $reserveroom)
     or die(mysqli_error($mysqli));
-    unset($_SESSION['order_no']);
+    unset($arrRes['order_no']);
+    unset($_SESSION['Reservation']);
 
     //close connection to MySQL
     mysqli_close($mysqli);

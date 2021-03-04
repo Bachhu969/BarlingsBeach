@@ -262,6 +262,7 @@ $display_block .= <<<END_OF_TEXT
 <section class="testimonials">
     <div class="testimonials-h">
         <div class="testimonials-content">
+            <h3>Testimonials</h3>
             <div class="container">
                 <div id="testimonials" class="owl-carousel owl-theme">
                     <div class="item ">

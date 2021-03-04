@@ -1,5 +1,6 @@
 <?php
     require_once('includes/connection.php');
+    require_once('models/reservation.php');
 
 
 //get/grab incoming room id
@@ -8,15 +9,26 @@ $roomData = GetRoomDetail($room_id);
 if(isset($roomData['RoomID']) && $roomData['RoomID']*1<=0){
     die('Invalid Page Link. Cannot Find Room Detail in db for room id: '. $room_id);
 }
-//var_dump($roomData);
-$_SESSION['room_id'] =$roomData['RoomID'];
-$_SESSION['room_name'] = $roomData['Name'];
-$_SESSION['arrival_date'] = $_POST['arrivaldate'];
-$_SESSION['departure_date'] = $_POST['departuredate'];
-$_SESSION['total_days'] = $_POST['total_days'];
-$_SESSION['rate'] = $_POST['rate'];
-$_SESSION['total_cost'] = $_POST['total_cost'];
 
+//var_dump($roomData);
+$objRes = new ReservationDetail();
+
+$objRes->room_id =$roomData['RoomID'];
+$objRes->room_name =$roomData['Name'];
+$objRes->arrival_date = $_POST['arrivaldate'];
+$objRes->departure_date = $_POST['departuredate'];
+$objRes->total_days =$_POST['total_days'];
+$objRes->rate =$_POST['rate'];
+$objRes->total_cost =$_POST['total_cost'];
+
+
+if(!isValidReservationDate($room_id, $objRes->arrival_date, $objRes->departure_date))
+{
+    header('Location: room.php?id='.$room_id.'&msg=RoomPack');
+    die();
+}
+//save reservation
+$_SESSION['Reservation'] = $objRes;
 
 ?>
 
@@ -25,7 +37,7 @@ $_SESSION['total_cost'] = $_POST['total_cost'];
 
 <head>
     <meta charset="UTF-8">
-    <title>Reservation 5</title>
+    <title>Reservation for <?php $objRes->room_name;?></title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- GOOGLE FONT -->
@@ -49,20 +61,6 @@ $_SESSION['total_cost'] = $_POST['total_cost'];
 </head>
 
 <body>
-<!--
-<form name="frm_customer_detail" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="POST">
-    <input type='hidden' name='business' value='koolkabin@live.com'>
-    <input type='hidden' name='item_name' value='Cart Item'> 
-    <input type='hidden' name='item_number' value="123">
-    <input type='hidden' name='amount' value='100'> 
-    <input type='hidden' name='currency_code' value='USD'> 
-    <input type="hidden" name="cmd" value="_xclick"> 
-    <input type="hidden" name="order" value="123">
-    <input type='hidden' name='notify_url' value='http://yourdomain.com/shopping-cart-check-out-flow-with-payment-integration/notify.php'>
-    <input type='hidden' name='return' value='http://yourdomain.com/shopping-cart-check-out-flow-with-payment-integration/response.php'>
-    <div> <input type="submit" class="btn-action" name="continue_payment" value="Continue Payment"> </div>
-</form>
-    -->
 <FORM action="forward_to_paypal.php" method="post">
 
     <!-- HEADER -->
@@ -171,12 +169,22 @@ $_SESSION['total_cost'] = $_POST['total_cost'];
                                         <div class="bottom">
                                             <span class="price">
                                                 <h5>Stay:</h5> <span class="amout">$
-                                                    <?=$_SESSION['rate'];?></span>/Night<br>(<?=$_SESSION['arrival_date'];?> - <?=$_POST['departuredate'];?>)
+                                                    <?=$objRes->rate;?></span>/Night<br>(<?=$objRes->arrival_date;?> - <?=$_POST['departuredate'];?>)
                                             </span><br>
                                             <span class="price">
                                                 <h5>Total:</h5>
                                                 <span class="amout">$
-                                                    <?=$_SESSION['total_cost'];?></span>/Days: <?=$_SESSION['total_days'];?>
+                                                    <?=$objRes->total_cost;?></span>/Days: <?=$objRes->total_days;?>
+                                            </span>
+                                            <span class="price">
+                                                <h5>Charging Percent:</h5>
+                                                <span class="amout">$
+                                                    <?=$objRes->charging_percent();?>%</span>
+                                            </span>
+                                            <span class="price">
+                                                <h5>Charging Amount:</h5>
+                                                <span class="amout">$
+                                                    <?=$objRes->chargin_amt();?> AUD</span>
                                             </span>
                                             <!-- <a href="reservation_2.html" class="btn-room btn ">VIEW DETAILS</a> -->
                                         </div>

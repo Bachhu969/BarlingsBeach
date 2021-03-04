@@ -70,6 +70,17 @@
 
 
 <script>
+    function fixDateNew(dt){
+        var datearr = dt.split("-");
+        var day = datearr[0];
+        var month = datearr[1];
+        datearr[0] = month;
+        datearr[1] = day;
+
+        let r1 = new Date();
+        r1.setFullYear(datearr[2], datearr[0], datearr[1]);
+        return r1;
+    }
     function fixdate(dt) {
         var datearr = dt.split("-");
         var day = datearr[0];
@@ -93,17 +104,20 @@
                 price = $(parentObj).find('.my_peak_price').val();
             }
 
+            var arrival = fixDateNew(arrivaldate).getTime();
+            var departure = fixDateNew(departuredate).getTime();
           
-            var arrival = new Date(fixdate(arrivaldate)).getTime();
-            var departure = new Date(fixdate(departuredate)).getTime();
+            // var arrival = new Date(fixdate(arrivaldate)).getTime();
+            // var departure = new Date(fixdate(departuredate)).getTime();
             
             if(arrival>departure){
                 //console.log($(parentObj).find('.departuredate').length);
                 departure = arrival;
                 $(parentObj).find('.departuredate').val(departure);
             }
-
             var num_of_nights = Math.round((departure - arrival) / (1000 * 60 * 60 * 24));
+            console.log(arrivaldate,departuredate);
+            console.log(departure,arrival, num_of_nights);
             
             $(parentObj).find('.total_days').text(num_of_nights);
             $(parentObj).find('.total_days').val(num_of_nights);
